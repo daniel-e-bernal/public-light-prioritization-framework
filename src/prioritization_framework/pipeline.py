@@ -5,8 +5,13 @@ from typing import Dict, List
 
 
 def load_expected_columns(config_path: Path) -> List[str]:
-    with config_path.open("r", encoding="utf-8") as config_file:
-        config = json.load(config_file)
+    try:
+        with config_path.open("r", encoding="utf-8") as config_file:
+            config = json.load(config_file)
+    except FileNotFoundError as error:
+        raise FileNotFoundError(f"Expected-column config file not found: {config_path}") from error
+    except json.JSONDecodeError as error:
+        raise ValueError(f"Expected-column config is not valid JSON: {config_path}") from error
     return config.get("expected_columns", [])
 
 
@@ -39,8 +44,11 @@ def process_rows(rows: List[Dict[str, str]], expected_columns: List[str]) -> Lis
 
 
 def read_rows(data_file_path: Path) -> List[Dict[str, str]]:
-    with data_file_path.open("r", encoding="utf-8", newline="") as data_file:
-        return list(csv.DictReader(data_file))
+    try:
+        with data_file_path.open("r", encoding="utf-8", newline="") as data_file:
+            return list(csv.DictReader(data_file))
+    except FileNotFoundError as error:
+        raise FileNotFoundError(f"Intake data file not found: {data_file_path}") from error
 
 
 def write_rows(output_file_path: Path, rows: List[Dict[str, str]], expected_columns: List[str]) -> None:
@@ -55,7 +63,7 @@ def write_rows(output_file_path: Path, rows: List[Dict[str, str]], expected_colu
 def run_pipeline(data_file_path: Path, config_path: Path, output_file_path: Path) -> Path:
     expected_columns = load_expected_columns(config_path)
     if not expected_columns:
-        raise ValueError("No expected columns configured.")
+        raise ValueError(f"No expected columns configured in {config_path}.")
 
     rows = read_rows(data_file_path)
     processed_rows = process_rows(rows, expected_columns)

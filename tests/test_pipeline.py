@@ -35,6 +35,10 @@ class PipelineTests(unittest.TestCase):
             ["asset_id", "location", "issue_type", "priority_score", "priority_action"],
             list(rows[0].keys()),
         )
+        self.assertEqual("A-100", rows[0]["asset_id"])
+        self.assertEqual("Main St / 4th St", rows[0]["location"])
+        self.assertEqual("Outage", rows[0]["issue_type"])
+        self.assertEqual("92", rows[0]["priority_score"])
         self.assertEqual(["Immediate Action", "Planned Action", "Monitor"], [row["priority_action"] for row in rows])
 
 
