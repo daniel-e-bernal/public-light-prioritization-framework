@@ -1,0 +1,4 @@
+asset_id,location,issue_type,priority_score
+A-100,Main St / 4th St,Outage,92
+A-101,Pine St / 6th St,Flicker,63
+A-102,Oak St / 2nd St,Inspection,28

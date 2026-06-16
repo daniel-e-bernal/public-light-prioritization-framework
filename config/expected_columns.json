@@ -1,0 +1,8 @@
+{
+  "expected_columns": [
+    "asset_id",
+    "location",
+    "issue_type",
+    "priority_score"
+  ]
+}
