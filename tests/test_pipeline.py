@@ -39,7 +39,9 @@ class PipelineTests(unittest.TestCase):
         self.assertEqual("Main St / 4th St", rows[0]["location"])
         self.assertEqual("Outage", rows[0]["issue_type"])
         self.assertEqual("92", rows[0]["priority_score"])
-        self.assertEqual(["Immediate Action", "Planned Action", "Monitor"], [row["priority_action"] for row in rows])
+        self.assertEqual("Immediate Action", rows[0]["priority_action"])
+        self.assertEqual("Planned Action", rows[1]["priority_action"])
+        self.assertEqual("Monitor", rows[2]["priority_action"])
 
 
 if __name__ == "__main__":
